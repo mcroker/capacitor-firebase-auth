@@ -2,7 +2,14 @@ import {Plugins} from '@capacitor/core';
 import {Observable, throwError} from 'rxjs';
 
 import 'firebase/auth';
-import * as firebase from 'firebase/app';
+import { firebase } from '@firebase/app';
+import {
+	GoogleAuthProvider,
+	FacebookAuthProvider,
+	TwitterAuthProvider,
+	PhoneAuthProvider,
+	UserCredential
+} from '@firebase/auth-types';
 import {
 	CapacitorFirebaseAuthPlugin,
 	FacebookSignInResult,
@@ -20,11 +27,11 @@ const plugin: CapacitorFirebaseAuthPlugin = Plugins.CapacitorFirebaseAuth;
  * @param providerId The provider identification.
  * @param data The provider additional information (optional).
  */
-export const cfaSignIn = (providerId: string, data?: SignInOptions): Observable<{userCredential: firebase.auth.UserCredential, result: SignInResult}> => {
-	const googleProvider = new firebase.auth.GoogleAuthProvider().providerId;
-	const facebookProvider = new firebase.auth.FacebookAuthProvider().providerId;
-	const twitterProvider = new firebase.auth.TwitterAuthProvider().providerId;
-	const phoneProvider = new firebase.auth.PhoneAuthProvider().providerId;
+export const cfaSignIn = (providerId: string, data?: SignInOptions): Observable<{userCredential: UserCredential, result: SignInResult}> => {
+	const googleProvider = new GoogleAuthProvider().providerId;
+	const facebookProvider = new FacebookAuthProvider().providerId;
+	const twitterProvider = new TwitterAuthProvider().providerId;
+	const phoneProvider = new PhoneAuthProvider().providerId;
 	switch (providerId) {
 		case googleProvider:
 			return cfaSignInGoogle();
@@ -45,7 +52,7 @@ export const cfaSignIn = (providerId: string, data?: SignInOptions): Observable<
  * @return Observable<{user: firebase.User, result: GoogleSignInResult}}>
  * @See Issue #23.
  */
-export const cfaSignInGoogle = (): Observable<{userCredential: firebase.auth.UserCredential, result: GoogleSignInResult}> => {
+export const cfaSignInGoogle = (): Observable<{userCredential: UserCredential, result: GoogleSignInResult}> => {
 	return new Observable(observer => {
 		// get the provider id
 		const providerId = firebase.auth.GoogleAuthProvider.PROVIDER_ID;
@@ -57,7 +64,7 @@ export const cfaSignInGoogle = (): Observable<{userCredential: firebase.auth.Use
 
 			// web sign in
 			firebase.app().auth().signInWithCredential(credential)
-				.then((userCredential: firebase.auth.UserCredential) => {
+				.then((userCredential: UserCredential) => {
 					observer.next({userCredential, result});
 					observer.complete();
 				})
@@ -76,7 +83,7 @@ export const cfaSignInGoogle = (): Observable<{userCredential: firebase.auth.Use
  * @return Observable<{user: firebase.User, result: FacebookSignInResult}}>
  * @See Issue #23.
  */
-export const cfaSignInFacebook = (): Observable<{userCredential: firebase.auth.UserCredential, result: FacebookSignInResult}> => {
+export const cfaSignInFacebook = (): Observable<{userCredential: UserCredential, result: FacebookSignInResult}> => {
 	return new Observable(observer => {
 		// get the provider id
 		const providerId = firebase.auth.FacebookAuthProvider.PROVIDER_ID;
@@ -88,7 +95,7 @@ export const cfaSignInFacebook = (): Observable<{userCredential: firebase.auth.U
 
 			// web sign in
 			firebase.app().auth().signInWithCredential(credential)
-				.then((userCredential: firebase.auth.UserCredential) => {
+				.then((userCredential: UserCredential) => {
 					observer.next({userCredential, result});
 					observer.complete();
 				})
@@ -104,7 +111,7 @@ export const cfaSignInFacebook = (): Observable<{userCredential: firebase.auth.U
  * @return Observable<{user: firebase.User, result: TwitterSignInResult}}>
  * @See Issue #23.
  */
-export const cfaSignInTwitter = (): Observable<{userCredential: firebase.auth.UserCredential, result: TwitterSignInResult}> => {
+export const cfaSignInTwitter = (): Observable<{userCredential: UserCredential, result: TwitterSignInResult}> => {
 	return new Observable(observer => {
 		// get the provider id
 		const providerId = firebase.auth.TwitterAuthProvider.PROVIDER_ID;
@@ -116,7 +123,7 @@ export const cfaSignInTwitter = (): Observable<{userCredential: firebase.auth.Us
 
 			// web sign in
 			firebase.app().auth().signInWithCredential(credential)
-				.then((userCredential: firebase.auth.UserCredential) => {
+				.then((userCredential: UserCredential) => {
 					observer.next({userCredential ,result});
 					observer.complete();
 				})
@@ -132,7 +139,7 @@ export const cfaSignInTwitter = (): Observable<{userCredential: firebase.auth.Us
  * @param phone The user phone number.
  * @param verificationCode The verification code sent by SMS (optional).
  */
-export const cfaSignInPhone = (phone: string, verificationCode?: string) : Observable<{userCredential: firebase.auth.UserCredential, result: PhoneSignInResult}>  => {
+export const cfaSignInPhone = (phone: string, verificationCode?: string) : Observable<{userCredential: UserCredential, result: PhoneSignInResult}>  => {
 	return new Observable(observer => {
 		// get the provider id
 		const providerId = firebase.auth.PhoneAuthProvider.PROVIDER_ID;
@@ -148,7 +155,7 @@ export const cfaSignInPhone = (phone: string, verificationCode?: string) : Obser
 
 			// web sign in
 			firebase.app().auth().signInWithCredential(credential)
-				.then((userCredential: firebase.auth.UserCredential) => {
+				.then((userCredential: UserCredential) => {
 					observer.next({userCredential, result});
 					observer.complete();
 				})

@@ -1,4 +1,9 @@
-import * as firebase from 'firebase/app';
+import {
+	GoogleAuthProvider,
+	FacebookAuthProvider,
+	TwitterAuthProvider,
+	PhoneAuthProvider,
+} from '@firebase/auth-types';
 import 'firebase/auth';
 
 declare module "@capacitor/core" {
@@ -13,25 +18,25 @@ export interface CapacitorFirebaseAuthPlugin {
 }
 
 export class GoogleSignInResult{
-  providerId = firebase.auth.GoogleAuthProvider.PROVIDER_ID;
+  providerId = GoogleAuthProvider.PROVIDER_ID;
   constructor(public idToken: string) {
   }
 }
 
 export class TwitterSignInResult {
-  providerId = firebase.auth.TwitterAuthProvider.PROVIDER_ID;
+  providerId = TwitterAuthProvider.PROVIDER_ID;
   constructor(public idToken: string, public secret: string) {
   }
 }
 
 export class FacebookSignInResult {
-  providerId = firebase.auth.FacebookAuthProvider.PROVIDER_ID;
+  providerId = FacebookAuthProvider.PROVIDER_ID;
   constructor(public idToken: string) {
   }
 }
 
 export class PhoneSignInResult {
-  providerId = firebase.auth.PhoneAuthProvider.PROVIDER_ID;
+  providerId = PhoneAuthProvider.PROVIDER_ID;
   constructor(public verificationId: string, public verificationCode: string) {
   }
 }

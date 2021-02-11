@@ -1,15 +1,15 @@
-import * as firebase from 'firebase/app';
+import { firebase } from '@firebase/app';
 import 'firebase/auth';
-import {FacebookSignInResult, SignInOptions} from '../definitions';
-import OAuthCredential = firebase.auth.OAuthCredential;
+import { FacebookAuthProvider, OAuthCredential } from '@firebase/auth-types';
+import { FacebookSignInResult, SignInOptions } from '../definitions';
 
-export const facebookSignInWeb: (options: {providerId: string, data?: SignInOptions}) => Promise<FacebookSignInResult>
+export const facebookSignInWeb: (options: { providerId: string, data?: SignInOptions }) => Promise<FacebookSignInResult>
     = async () => {
-    const provider = new firebase.auth.FacebookAuthProvider();
-    firebase.auth().useDeviceLanguage();
+        const provider = new FacebookAuthProvider();
+        firebase.auth().useDeviceLanguage();
 
-    const userCredential = await firebase.auth().signInWithPopup(provider);
+        const userCredential = await firebase.auth().signInWithPopup(provider);
 
-    const {credential}: { credential: OAuthCredential; } = userCredential;
-    return new FacebookSignInResult(credential.accessToken);
-}
+        const { credential }: { credential: OAuthCredential; } = userCredential;
+        return new FacebookSignInResult(credential.accessToken);
+    }
